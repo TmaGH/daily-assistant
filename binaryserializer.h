@@ -14,14 +14,14 @@
 class BinarySerializer
 {
 public:
-    explicit BinarySerializer(const QUrl& path);
+    explicit BinarySerializer(const QString& path);
     void save(const Serializable& serializable);
     void load(Serializable& serializable);
-    void setFilepath(const QUrl &path);
-    QUrl getFilepath() const;
+    void setFilepath(const QString &path);
+    QString getFilepath() const;
 
 private:
-    QUrl filepath;
+    QString filepath;
 
 };
 

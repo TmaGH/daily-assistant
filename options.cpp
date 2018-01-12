@@ -8,7 +8,7 @@ Options::Options(BinarySerializer *biser, QWidget *parent) :
 {
     // Server information
 
-    ip = "10.54.118.100";
+    ip = "10.54.118.101";
     port = 41815;
 
     // ------------------
@@ -17,6 +17,9 @@ Options::Options(BinarySerializer *biser, QWidget *parent) :
     ui->setupUi(this);
     connect(ui->encryption, &QCheckBox::stateChanged, this, &Options::encryptionStateChanged);
     connect(ui->sync, &QCheckBox::stateChanged, this, &Options::syncStateChanged);
+    connect(syncThread, &ServerSync::error, [this] {
+    qDebug() << "ERROOOOOR!";
+    });
     ui->sync->setEnabled(false);
 }
 

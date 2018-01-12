@@ -1,28 +1,27 @@
 #include "binaryserializer.h"
 
-BinarySerializer::BinarySerializer(const QUrl &path) :
+BinarySerializer::BinarySerializer(const QString &path) :
     filepath(path)
 {}
 
-QUrl BinarySerializer::getFilepath() const
+QString BinarySerializer::getFilepath() const
 {
     return filepath;
 }
 
 void BinarySerializer::save(const Serializable& serializable)
 {
-    QString path = filepath.path();
-        if(QFile::exists(path)) {
-            QFile::copy(path, path+".backup");
-            QFile::remove(path);
+        if(QFile::exists(filepath)) {
+            QFile::copy(filepath, filepath+".backup");
+            QFile::remove(filepath);
         }
-        QFile file(path);
+        QFile file(filepath);
         file.open(QFile::WriteOnly);
         QDataStream dataStream(&file);
         dataStream << serializable.toVariant();
         file.close();
-        if(QFile::exists(path)) {
-            QFile::remove(path+".backup");
+        if(QFile::exists(filepath)) {
+            QFile::remove(filepath+".backup");
         } else {
             qDebug() << "Saving failed. Restore old data from backup.";
         }
@@ -31,10 +30,9 @@ void BinarySerializer::save(const Serializable& serializable)
 
 void BinarySerializer::load(Serializable& serializable)
 {
-    QString path = filepath.path();
-        QFileInfo check_file(path);
+        QFileInfo check_file(filepath);
         if (check_file.exists() && check_file.isFile()) {
-            QFile file(path);
+            QFile file(filepath);
             file.open(QFile::ReadOnly);
             QDataStream dataStream(&file);
             QVariant variant;
@@ -47,7 +45,7 @@ void BinarySerializer::load(Serializable& serializable)
         }
 }
 
-void BinarySerializer::setFilepath(const QUrl &path)
+void BinarySerializer::setFilepath(const QString &path)
 {
     filepath = path;
 }

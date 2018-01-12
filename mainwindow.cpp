@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     tasks(new Tasks),
-    biser(new BinarySerializer(QUrl("qrc:/daily_assistant_data"))),
+    biser(new BinarySerializer(QDir::currentPath() + "daily-assistant-data")),
     options(new Options(biser))
 {
     // Load old data if exists

@@ -56,7 +56,7 @@ void ServerSync::sendData(const QString& serverIP, const quint16& serverPort)
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_10);
-    QString path = biser->getFilepath().path();
+    QString path = biser->getFilepath();
 
     QFileInfo check_file(path);
     if (check_file.exists() && check_file.isFile()) {
