@@ -4,12 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia
+QT       += core gui network
 CONFIG   += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = testi
+TARGET = daily-assistant
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -31,7 +31,10 @@ SOURCES += \
     work.cpp \
     notes.cpp \
     binaryserializer.cpp \
-    tasks.cpp
+    tasks.cpp \
+    options.cpp \
+    taskedit.cpp \
+    serversync.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,14 +43,19 @@ HEADERS += \
     notes.h \
     serializable.h \
     binaryserializer.h \
-    tasks.h
+    tasks.h \
+    options.h \
+    taskedit.h \
+    serversync.h
 
 FORMS += \
         mainwindow.ui \
     task.ui \
     work.ui \
     notes.ui \
-    tasks.ui
+    tasks.ui \
+    options.ui \
+    taskedit.ui
 
 RESOURCES += \
     resources.qrc

@@ -16,7 +16,7 @@ class Notes : public QWidget, public Serializable
 
 public:
     explicit Notes(QWidget *parent = nullptr);
-    void displayMinutesSpent(int minutesSpent);
+    void displayMinutesSpent(int &minutesSpent);
     ~Notes();
 
     QVariant toVariant() const override;

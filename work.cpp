@@ -11,10 +11,9 @@ Work::Work(QWidget *parent) :
     timeLeft(time {0,0,0})
 {
     ui->setupUi(this);
-    connect(ui->setButton, &QPushButton::clicked,
-            this, &Work::setTime);
 
-    connect(timer, &QTimer::timeout, this, &Work::updateTime);
+    // Buttons
+    connect(ui->setButton, &QPushButton::clicked, this, &Work::setTime);
 
     connect(ui->completeButton, &QPushButton::clicked, [this] {
         this->close();
@@ -22,18 +21,10 @@ Work::Work(QWidget *parent) :
     });
     connect(ui->startButton, &QPushButton::clicked, [this] {
         if(timer->isActive()) {
-            timer->stop();
-            ui->set25->setEnabled(true);
-            ui->set45->setEnabled(true);
-            ui->set60->setEnabled(true);
-            ui->setButton->setEnabled(true);
+            stop();
             emit dataChanged();
         } else {
-            timer->start(1000);
-            ui->set25->setEnabled(false);
-            ui->set45->setEnabled(false);
-            ui->set60->setEnabled(false);
-            ui->setButton->setEnabled(false);
+            start();
         }
     });
     connect(ui->cancelButton, &QPushButton::clicked, [this] {
@@ -57,7 +48,15 @@ Work::Work(QWidget *parent) :
         timeLeft.hours = 1;
         displayTime();
     });
+
+    // Signals (timer, triggered every second)
+    connect(timer, &QTimer::timeout, this, &Work::updateTime);
+
 }
+
+/*
+ * Getter
+*/
 
 int Work::minutesSpent()
 {
@@ -65,20 +64,31 @@ int Work::minutesSpent()
 
 }
 
-void Work::setTime() {
-    *qtime = ui->timeEdit->time();
-    timeLeft.hours = qtime->hour();
-    timeLeft.minutes = qtime->minute();
-    timeLeft.seconds = qtime->second();
-    displayTime();
+/*
+ * Control timer
+*/
+
+void Work::stop()
+{
+    timer->stop();
+    ui->set25->setEnabled(true);
+    ui->set45->setEnabled(true);
+    ui->set60->setEnabled(true);
+    ui->setButton->setEnabled(true);
 }
 
-void Work::displayTime()
+void Work::start()
 {
-    ui->hours->display(timeLeft.hours);
-    ui->minutes->display(timeLeft.minutes);
-    ui->seconds->display(timeLeft.seconds);
+    timer->start(1000);
+    ui->set25->setEnabled(false);
+    ui->set45->setEnabled(false);
+    ui->set60->setEnabled(false);
+    ui->setButton->setEnabled(false);
 }
+
+/*
+ * The function that is called every second to update time
+*/
 
 void Work::updateTime() {
 
@@ -105,22 +115,38 @@ void Work::updateTime() {
         }
         displayTime();
     } else {
-        timer->stop();
+        stop();
         QMessageBox::information(this, "Session Ended", "Work session has ended. Take a break if you wish.");
         emit dataChanged();
     }
+}
+
+/*
+ * Utility, set time variables and display time in GUI
+*/
+
+void Work::setTime() {
+    *qtime = ui->timeEdit->time();
+    timeLeft.hours = qtime->hour();
+    timeLeft.minutes = qtime->minute();
+    timeLeft.seconds = qtime->second();
+    displayTime();
+}
+
+void Work::displayTime()
+{
+    ui->hours->display(timeLeft.hours);
+    ui->minutes->display(timeLeft.minutes);
+    ui->seconds->display(timeLeft.seconds);
 }
 
 void Work::clearTime() {
     timeLeft = time {0,0,0};
 }
 
-Work::~Work()
-{
-    delete ui;
-    delete qtime;
-    delete timer;
-}
+/*
+ * Serialization and destructor
+*/
 
 QVariant Work::toVariant() const
 {
@@ -137,4 +163,11 @@ void Work::fromVariant(const QVariant& variant)
     timeSpent.hours = map.value("hours").toInt();
     timeSpent.minutes = map.value("minutes").toInt();
     timeSpent.seconds = map.value("seconds").toInt();
+}
+
+Work::~Work()
+{
+    delete ui;
+    delete qtime;
+    delete timer;
 }

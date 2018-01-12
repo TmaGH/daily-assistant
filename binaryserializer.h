@@ -18,6 +18,7 @@ public:
     void save(const Serializable& serializable);
     void load(Serializable& serializable);
     void setFilepath(const QUrl &path);
+    QUrl getFilepath() const;
 
 private:
     QUrl filepath;

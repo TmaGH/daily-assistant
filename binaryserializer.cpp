@@ -4,12 +4,14 @@ BinarySerializer::BinarySerializer(const QUrl &path) :
     filepath(path)
 {}
 
+QUrl BinarySerializer::getFilepath() const
+{
+    return filepath;
+}
+
 void BinarySerializer::save(const Serializable& serializable)
 {
     QString path = filepath.path();
-    if(path.isNull()) {
-        qDebug() << "Set filepath before calling this.";
-    } else {
         if(QFile::exists(path)) {
             QFile::copy(path, path+".backup");
             QFile::remove(path);
@@ -25,15 +27,11 @@ void BinarySerializer::save(const Serializable& serializable)
             qDebug() << "Saving failed. Restore old data from backup.";
         }
         qDebug() << "Saved.";
-    }
 }
 
 void BinarySerializer::load(Serializable& serializable)
 {
     QString path = filepath.path();
-    if(path.isNull()) {
-        qDebug() << "Set filepath before calling this.";
-    } else {
         QFileInfo check_file(path);
         if (check_file.exists() && check_file.isFile()) {
             QFile file(path);
@@ -47,7 +45,6 @@ void BinarySerializer::load(Serializable& serializable)
         } else {
             qDebug() << "No data to load.";
         }
-    }
 }
 
 void BinarySerializer::setFilepath(const QUrl &path)

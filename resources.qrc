@@ -3,5 +3,6 @@
         <file>Resources/down.png</file>
         <file>Resources/tasks.png</file>
         <file>Resources/up.png</file>
+        <file>Resources/options.png</file>
     </qresource>
 </RCC>

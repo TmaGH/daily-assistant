@@ -6,28 +6,18 @@ Tasks::Tasks(QWidget *parent) :
     ui(new Ui::Tasks),
     mTasks()
 {
+
     ui->setupUi(this);
-    connect(ui->addTaskButton, &QPushButton::clicked,
-            this, &Tasks::addTaskDialogue);
     ui->taskProgressBar->setValue(0);
+
+    // Buttons
+    connect(ui->addTaskButton, &QPushButton::clicked, this, &Tasks::addTaskDialogue);
 }
 
-void Tasks::addTaskDialogue()
-{
-    bool ok;
-    QString name = QInputDialog::getText(this,
-                                         tr("Add task"),
-                                         tr("Task name"),
-                                         QLineEdit::Normal,
-                                         tr("Untitled task"), &ok);
-    if(ok && !name.isEmpty()) {
-        Task *task = new Task(name);
-        addTask(task);
-        updateStatus();
-        emit dataChanged();
-        qDebug() << "Added new task.";
-    }
-}
+
+/*
+ * Functions that change task data
+*/
 
 void Tasks::addTask(Task *task)
 {
@@ -51,6 +41,27 @@ void Tasks::removeTask(Task* task)
     emit dataChanged();
 }
 
+/*
+ * Slots
+*/
+
+void Tasks::addTaskDialogue()
+{
+    bool ok;
+    QString name = QInputDialog::getText(this,
+                                         tr("Add task"),
+                                         tr("Task name"),
+                                         QLineEdit::Normal,
+                                         tr("Untitled task"), &ok);
+    if(ok && !name.isEmpty()) {
+        Task *task = new Task(name);
+        addTask(task);
+        updateStatus();
+        emit dataChanged();
+        qDebug() << "Added new task.";
+    }
+}
+
 void Tasks::taskStatusChanged()
 {
     updateStatus();
@@ -60,6 +71,10 @@ void Tasks::taskDataChanged()
 {
     emit dataChanged();
 }
+
+/*
+ * Functions that keep track of tasks and their state
+*/
 
 void Tasks::updateTaskOrder(Task *task, int increment)
 {
@@ -87,10 +102,9 @@ void Tasks::updateStatus()
     ui->taskProgressBar->setValue(static_cast<int>(static_cast<float>(completedCount*100)/todoCount));
 }
 
-Tasks::~Tasks()
-{
-    delete ui;
-}
+/*
+ * Serialization and destructor
+*/
 
 QVariant Tasks::toVariant() const
 {
@@ -116,4 +130,9 @@ void Tasks::fromVariant(const QVariant& variant)
         addTask(task);
     }
     updateStatus();
+}
+
+Tasks::~Tasks()
+{
+    delete ui;
 }

@@ -48,6 +48,8 @@ private:
 
     void clearTime();
     void displayTime();
+    void stop();
+    void start();
 
 };
 

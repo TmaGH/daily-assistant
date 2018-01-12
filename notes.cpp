@@ -7,6 +7,8 @@ Notes::Notes(QWidget *parent) :
     ui(new Ui::Notes)
 {
     ui->setupUi(this);
+
+    // Buttons
     connect(ui->saveButton, &QPushButton::clicked, [this] {
         ui->notesText->setReadOnly(true);
         ui->editButton->setEnabled(true);
@@ -23,16 +25,15 @@ Notes::Notes(QWidget *parent) :
     });
 }
 
-void Notes::displayMinutesSpent(int minutesSpent)
+void Notes::displayMinutesSpent(int& minutesSpent)
 {
     const QString text = "Minutes spent on task: " + QString::number(minutesSpent);
     ui->timeSpentLabel->setText(text);
 }
 
-Notes::~Notes()
-{
-    delete ui;
-}
+/*
+ * Serialization and destructor
+*/
 
 QVariant Notes::toVariant() const
 {
@@ -48,4 +49,9 @@ void Notes::fromVariant(const QVariant& variant)
     QTextDocument *document = new QTextDocument();
     document->setPlainText(text);
     ui->notesText->setDocument(document);
+}
+
+Notes::~Notes()
+{
+    delete ui;
 }
