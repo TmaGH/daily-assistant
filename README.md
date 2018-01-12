@@ -1,4 +1,4 @@
-A software made with C++ and Qt aiming to have all the tools that help me have a more productive day.
+A software made with C++ and Qt aiming to have all the tools needed for the most productive day.
 Works in both Windows and Linux.
 
 Currently has these features:
