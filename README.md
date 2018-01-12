@@ -8,7 +8,8 @@ Currently has these features:
 - Backup data to server with no ability to restore (serversync class)
 
 Up next:
-- Add ability to restore data
+- Ability to restore data from server
+- Support for multiple clients connected at the same time
 - Data protection with encryption (Mandatory with data sync)
 - Deadlines for tasks with changing colours as deadline approaches
 - Many other features...
