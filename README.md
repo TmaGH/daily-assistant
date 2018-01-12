@@ -1,4 +1,4 @@
-A software made to have all the tools I need to have the most productive day possible.
+A software made with C++ and Qt aiming to have all the tools that help me have a more productive day.
 
 Currently has these features:
 - Task Manager (tasks, task classes)
@@ -9,3 +9,5 @@ Currently has these features:
 Up next:
 - Data sync to a remote host (https://github.com/TmaGH/daily-assistant-server)
 - Data protection with encryption (Mandatory with data sync)
+- Deadlines for tasks with changing colours as deadline approaches
+- Many other features...
