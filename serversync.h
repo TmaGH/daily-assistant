@@ -16,8 +16,12 @@ public:
 
     void run() override;
 
+public slots:
+    void attemptSend();
+
 signals:
     void error(int socketError, const QString &message);
+    void syncNow();
 
 private:
     QString hostIP;
@@ -26,12 +30,10 @@ private:
     QWaitCondition cond;
     bool quit = false;
     BinarySerializer *biser;
-    QTimer *timer;
 
     void sendData(const QString& serverIP, const quint16& serverPort);
 
-private slots:
-    void attemptSend();
+
 
 };
 

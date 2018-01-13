@@ -4,14 +4,11 @@ ServerSync::ServerSync(const QString& ip, const quint16& port, BinarySerializer 
     QThread(parent),
     hostIP(ip),
     port(port),
-    biser(biser),
-    timer(new QTimer)
+    biser(biser)
 {
     QMutexLocker locker(&mutex);
-    connect(timer, &QTimer::timeout, this, &ServerSync::attemptSend);
-    timer->start(60000);
+    connect(this, &ServerSync::syncNow, this, &ServerSync::attemptSend);
     start();
-    sendData(hostIP, this->port);
 }
 
 void ServerSync::attemptSend()
@@ -20,7 +17,7 @@ void ServerSync::attemptSend()
         start();
     }
     else {
-        cond.wakeOne();
+        //cond.wakeOne();
     }
 }
 
@@ -43,19 +40,9 @@ void ServerSync::run()
 
 void ServerSync::sendData(const QString& serverIP, const quint16& serverPort)
 {
+
     const int timeout = 5000;
 
-    QTcpSocket *socket = new QTcpSocket();
-    socket->connectToHost(serverIP, serverPort);
-
-    if(!socket->waitForConnected(timeout)) {
-        emit error(socket->error(), socket->errorString());
-        return;
-    }
-
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_10);
     QString path = biser->getFilepath();
 
     QFileInfo check_file(path);
@@ -67,20 +54,31 @@ void ServerSync::sendData(const QString& serverIP, const quint16& serverPort)
             return;
         }
 
-        QByteArray q = file.readAll();
-        block.append(q);
+        QByteArray block;
+        block = file.readAll();
+        qDebug() << sizeof(block);
         file.close();
 
-        out.device()->seek(0);
-
         qint64 x = 0;
+
+        QTcpSocket *socket = new QTcpSocket;
+        socket->connectToHost(serverIP, serverPort);
+
+        if(!socket->waitForConnected(timeout)) {
+            emit error(socket->error(), socket->errorString());
+            return;
+        }
         while(x < block.size()) {
             qint64 y = socket->write(block);
+            if(y >= 0) {
             x += y;
-            qDebug() << x;
+            qDebug() << x << "bytes written.";
+            } else {
+                qDebug() << "Error occured while writing data.";
+            }
         }
+        socket->waitForBytesWritten();
         socket->disconnectFromHost();
-        qDebug() << "Sucesfully sent data.";
     } else {
         qDebug() << "No data to send.";
     }
@@ -90,10 +88,7 @@ ServerSync::~ServerSync()
 {
     mutex.lock();
     quit = true;
-    QString serverIP = hostIP;
-    quint16 serverPort = port;
     cond.wakeOne();
     mutex.unlock();
     wait();
-    sendData(serverIP, serverPort);
 }

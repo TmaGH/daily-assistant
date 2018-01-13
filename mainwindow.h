@@ -32,6 +32,7 @@ private:
     Tasks *tasks;
     BinarySerializer *biser;
     Options *options;
+    ServerSync *syncThread = nullptr;
 
 };
 

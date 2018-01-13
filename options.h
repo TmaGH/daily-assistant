@@ -16,6 +16,7 @@ class Options : public QWidget, public Serializable
 
 public:
     explicit Options(BinarySerializer *biser, QWidget *parent = nullptr);
+    ServerSync *getSyncThread();
     ~Options();
 
     QVariant toVariant() const override;
@@ -36,6 +37,7 @@ private:
 private slots:
     void encryptionStateChanged(int state);
     void syncStateChanged(int state);
+    void onError(int socketError, const QString &message);
 
 };
 

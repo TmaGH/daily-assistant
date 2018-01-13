@@ -31,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::saveData()
 {
     biser->save(*this);
+    ServerSync *syncThread = options->getSyncThread();
+    if(syncThread != nullptr) {
+        emit syncThread->syncNow();
+    }
 }
 
 /*

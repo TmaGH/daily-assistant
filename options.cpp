@@ -17,10 +17,17 @@ Options::Options(BinarySerializer *biser, QWidget *parent) :
     ui->setupUi(this);
     connect(ui->encryption, &QCheckBox::stateChanged, this, &Options::encryptionStateChanged);
     connect(ui->sync, &QCheckBox::stateChanged, this, &Options::syncStateChanged);
-    connect(syncThread, &ServerSync::error, [this] {
-    qDebug() << "ERROOOOOR!";
-    });
     ui->sync->setEnabled(false);
+}
+
+void Options::onError(int socketError, const QString &message)
+{
+    qDebug() << "Socket error" << socketError << ":" << message;
+}
+
+ServerSync* Options::getSyncThread()
+{
+    return syncThread;
 }
 
 void Options::setSyncEnabled(bool state) {
@@ -45,6 +52,7 @@ void Options::syncStateChanged(int state)
 {
     if(state == 2 && syncThread == nullptr) {
         syncThread = new ServerSync(ip, port, biser);
+        connect(syncThread, &ServerSync::error, this, &Options::onError);
     } else {
         delete syncThread;
         syncThread = nullptr;

@@ -16,7 +16,10 @@ void BinarySerializer::save(const Serializable& serializable)
             QFile::remove(filepath);
         }
         QFile file(filepath);
-        file.open(QFile::WriteOnly);
+        if(!file.open(QFile::WriteOnly)) {
+            qDebug() << "Can't open file.";
+            return;
+        }
         QDataStream dataStream(&file);
         dataStream << serializable.toVariant();
         file.close();
@@ -33,7 +36,10 @@ void BinarySerializer::load(Serializable& serializable)
         QFileInfo check_file(filepath);
         if (check_file.exists() && check_file.isFile()) {
             QFile file(filepath);
-            file.open(QFile::ReadOnly);
+            if(!file.open(QFile::ReadOnly)) {
+                qDebug() << "Can't open file.";
+                return;
+            }
             QDataStream dataStream(&file);
             QVariant variant;
             dataStream >> variant;
