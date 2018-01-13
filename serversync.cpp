@@ -146,7 +146,7 @@ void ServerSync::restoreData(const QString& serverIP, const quint16& serverPort)
     */
 
     do {
-        if (!socket->waitForReadyRead(5000)) {
+        if (!socket->waitForReadyRead(timeout)) {
             return;
         }
 
