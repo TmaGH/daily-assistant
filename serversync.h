@@ -18,6 +18,7 @@ public:
 
 public slots:
     void attemptSend();
+    void attemptRestore();
 
 signals:
     void error(int socketError, const QString &message);
@@ -31,7 +32,10 @@ private:
     bool quit = false;
     BinarySerializer *biser;
 
-    void sendData(const QString& serverIP, const quint16& serverPort);
+    enum OPERATIONS : char {NONE, BACKUP, RESTORE};
+
+    void backupData(const QString& serverIP, const quint16& serverPort);
+    void restoreData(const QString& serverIP, const quint16& serverPort);
 
 
 

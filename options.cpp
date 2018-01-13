@@ -8,7 +8,7 @@ Options::Options(BinarySerializer *biser, QWidget *parent) :
 {
     // Server information
 
-    ip = "10.54.118.101";
+    ip = "192.168.1.128";
     port = 41815;
 
     // ------------------
@@ -17,7 +17,18 @@ Options::Options(BinarySerializer *biser, QWidget *parent) :
     ui->setupUi(this);
     connect(ui->encryption, &QCheckBox::stateChanged, this, &Options::encryptionStateChanged);
     connect(ui->sync, &QCheckBox::stateChanged, this, &Options::syncStateChanged);
+    connect(ui->restoreButton, &QPushButton::clicked, this, &Options::restoreData);
     ui->sync->setEnabled(false);
+}
+
+void Options::restoreData()
+{
+    if(syncThread == nullptr) {
+        syncThread = new ServerSync(ip, port, biser);
+        connect(syncThread, &ServerSync::error, this, &Options::onError);
+    }
+    syncThread->attemptRestore();
+    emit restore();
 }
 
 void Options::onError(int socketError, const QString &message)
@@ -39,7 +50,7 @@ void Options::setSyncEnabled(bool state) {
 
 void Options::encryptionStateChanged(int state)
 {
-// Encryption not implemented
+    // Encryption not implemented
     if(state == 2) {
         setSyncEnabled(true);
     } else {

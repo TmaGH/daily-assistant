@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Signals
     connect(tasks, &Tasks::dataChanged, this, &MainWindow::saveData);
     connect(options, &Options::dataChanged, this, &MainWindow::saveData);
+    connect(options, &Options::restore, [this] {
+        biser->load(*this);
+    });
 }
 
 void MainWindow::saveData()

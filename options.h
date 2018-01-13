@@ -24,6 +24,7 @@ public:
 
 signals:
     void dataChanged();
+    void restore();
 
 private:
     Ui::Options *ui;
@@ -37,6 +38,7 @@ private:
 private slots:
     void encryptionStateChanged(int state);
     void syncStateChanged(int state);
+    void restoreData();
     void onError(int socketError, const QString &message);
 
 };

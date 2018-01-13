@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>456</width>
     <height>300</height>
    </rect>
   </property>
@@ -122,9 +122,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="changeSessionButton">
        <property name="text">
         <string>Change Session ID</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="restoreButton">
+       <property name="text">
+        <string>Restore data</string>
        </property>
       </widget>
      </item>

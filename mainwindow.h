@@ -26,7 +26,6 @@ public:
     QVariant toVariant() const override;
     void fromVariant(const QVariant& variant) override;
 
-
 private:
     Ui::MainWindow *ui;
     Tasks *tasks;

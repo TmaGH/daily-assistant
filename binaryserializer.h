@@ -10,7 +10,6 @@
 
 #include "serializable.h"
 
-
 class BinarySerializer
 {
 public:
