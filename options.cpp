@@ -91,4 +91,5 @@ Options::~Options()
 {
     delete ui;
     delete syncThread;
+    delete biser;
 }
