@@ -201,4 +201,5 @@ ServerSync::~ServerSync()
     cond.wakeOne();
     mutex.unlock();
     wait();
+    delete biser;
 }
