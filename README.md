@@ -6,11 +6,10 @@ Currently has these features:
 - Work timer (work class)
 - Task notes (notes class)
 - Saves data to local machine (serializable, binaryserializer and all classes inheriting serializable)
-- Backup data to server with no ability to restore (serversync class)
+- Backup and restore function with server for one client (serversync class)
 
 Up next:
-- Ability to restore data from server
-- Support for multiple clients connected at the same time
+- Backup and restore for multiple clients connected at the same time
 - Data protection with encryption (Mandatory with data sync)
 - Deadlines for tasks with changing colours as deadline approaches
 - Many other features...
