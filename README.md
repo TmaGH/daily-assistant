@@ -1,3 +1,5 @@
+Practice project that's not in development.
+
 A software made with C++ and Qt aiming to have all the tools needed for the most productive day.
 Works in both Windows and Linux.
 
